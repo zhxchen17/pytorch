@@ -61,7 +61,7 @@ __all__ = [
     'list',
     'load',
     'load_state_dict_from_url',
-    'set_dir',
+    'set_dir'
 ]
 
 # matches bfd8deac from resnet18-bfd8deac.pth

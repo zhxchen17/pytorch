@@ -241,6 +241,10 @@
     "QuantType",
     "wrap_cpp_module"
   ],
+  "torch.ao.sparsity": [
+    "get_dynamic_sparse_quantized_mapping",
+    "get_static_sparse_quantized_mapping"
+  ],
   "torch.autograd": [
     "NestedIOFunction",
     "detect_anomaly",
@@ -550,9 +554,6 @@
     "List",
     "Template"
   ],
-  "torch.distributed.elastic.utils.data.elastic_distributed_sampler": [
-    "DistributedSampler"
-  ],
   "torch.distributed.elastic.utils.logging": [
     "Optional",
     "get_log_level"
@@ -560,22 +561,6 @@
   "torch.distributed.elastic.utils.store": [
     "List",
     "timedelta"
-  ],
-  "torch.distributed.fsdp.flatten_params_wrapper": [
-    "Any",
-    "Dict",
-    "Generator",
-    "Iterator",
-    "List",
-    "NamedTuple",
-    "Optional",
-    "ParamOffset",
-    "Sequence",
-    "SharedParamInfo",
-    "Tensor",
-    "Tuple",
-    "Union",
-    "accumulate"
   ],
   "torch.distributed.fsdp.utils": [
     "Any",
@@ -695,6 +680,11 @@
   "torch.distributed.optim.utils": [
     "Type"
   ],
+  "torch.distributed.pipeline": [
+    "is_recomputing",
+    "WithDevice",
+    "NoChunk"
+  ],
   "torch.distributed.pipeline.sync.checkpoint": [
     "Checkpoint",
     "Checkpointing",
@@ -712,19 +702,6 @@
     "Context",
     "Copy",
     "Wait"
-  ],
-  "torch.distributed.pipeline.sync.dependency": [
-    "Fork",
-    "Join",
-    "fork",
-    "join"
-  ],
-  "torch.distributed.pipeline.sync.microbatch": [
-    "Batch",
-    "NoChunk",
-    "check",
-    "gather",
-    "scatter"
   ],
   "torch.distributed.pipeline.sync.phony": [
     "get_phony"
@@ -1009,22 +986,6 @@
     "dataclass",
     "map_arg"
   ],
-  "torch.fx.graph_module": [
-    "Any",
-    "Dict",
-    "Graph",
-    "Importer",
-    "List",
-    "Optional",
-    "PackageExporter",
-    "PackageImporter",
-    "Path",
-    "PythonCode",
-    "Set",
-    "Type",
-    "Union",
-    "compatibility"
-  ],
   "torch.fx.immutable_collections": [
     "Any",
     "Context",
@@ -1090,45 +1051,11 @@
     "map_aggregate",
     "map_arg"
   ],
-  "torch.fx.passes.param_fetch": [
-    "Any",
-    "Callable",
-    "Dict",
-    "GraphModule",
-    "List",
-    "Tuple",
-    "Type",
-    "compatibility"
-  ],
-  "torch.fx.passes.shape_prop": [
-    "Any",
-    "Dict",
-    "NamedTuple",
-    "Node",
-    "Optional",
-    "Tuple",
-    "compatibility",
-    "map_aggregate"
-  ],
-  "torch.fx.passes.split_module": [
-    "Any",
-    "Callable",
-    "Dict",
-    "GraphModule",
-    "List",
-    "Optional",
-    "compatibility"
-  ],
   "torch.fx.proxy": [
     "assert_fn"
   ],
   "torch.hub": [
-    "HTTPError",
-    "Path",
-    "Request",
-    "tqdm",
-    "urlopen",
-    "urlparse"
+    "tqdm"
   ],
   "torch.jit": [
     "Attribute",
@@ -1295,6 +1222,16 @@
     "tensorsolve",
     "vander",
     "vector_norm"
+  ],
+  "torch.monitor": [
+    "Aggregation",
+    "Event",
+    "EventHandlerHandle",
+    "Stat",
+    "data_value_t",
+    "log_event",
+    "register_event_handler",
+    "unregister_event_handler"
   ],
   "torch.multiprocessing": [
     "Array",
@@ -1689,6 +1626,11 @@
     "enable_fake_quant",
     "enable_observer"
   ],
+  "torch.quantization.fx": [
+    "convert",
+    "fuse",
+    "prepare"
+  ],
   "torch.quantization.fuse_modules": [
     "fuse_conv_bn",
     "fuse_conv_bn_relu",
@@ -2027,11 +1969,17 @@
     "Any",
     "OrderedDict"
   ],
+  "torch.utils.model_dump": [
+    "main"
+  ],
   "torch.utils.show_pickle": [
     "Any",
     "BinaryIO",
     "IO",
     "Union"
+  ],
+  "torch.utils.tensorboard": [
+    "RecordWriter"
   ],
   "torch": [
     "BFloat16Storage",
