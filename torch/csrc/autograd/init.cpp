@@ -270,14 +270,46 @@ PyObject* THPAutograd_initExtension(PyObject* _unused, PyObject* unused) {
 
   {
     using torch::profiler::impl::Result;
+
     py::class_<ExtraFields<EventType::TorchOp>>(m, "_ExtraFields_TorchOp")
         .def_readonly("inputs", &ExtraFields<EventType::TorchOp>::inputs_);
 
     py::class_<Inputs>(m, "_Inputs")
-        .def_readonly("shapes", &Inputs::shapes_)
+        .def_property_readonly(
+            "ivalues",
+            [](const Inputs& inputs) {
+              py::list list;
+              for (auto& v : inputs.ivalues_) {
+                list.append(torch::jit::toPyObject(v));
+              }
+              return list;
+            })
+        .def_readonly("tensor_metadata", &Inputs::tensor_metadata_)
         .def_readonly("dtypes", &Inputs::dtypes_);
 
-    py::class_<ExtraFields<EventType::Backend>>(m, "_ExtraFields_Backend");
+    py::class_<TensorMetadata>(m, "_TensorMetadata")
+        .def_readonly("layout", &TensorMetadata::layout_)
+        .def_property_readonly(
+            "shape",
+            [](const TensorMetadata& metadata) {
+              py::list arg_shape_list;
+              for (auto size : metadata.sizes_and_strides_.sizes_arrayref()) {
+                // TODO: Someday support Symbolic Ints
+                arg_shape_list.append(size.expect_int());
+              }
+              return arg_shape_list;
+            })
+        .def_property_readonly(
+            "stride",
+            [](const TensorMetadata& metadata) {
+              py::list arg_stride_list;
+              for (auto stride : metadata.sizes_and_strides_.strides_arrayref()) {
+                // TODO: Someday support Symbolic Ints
+                arg_stride_list.append(stride.expect_int());
+              }
+              return arg_stride_list;
+            });
+    py::class_<ExtraFields<EventType::Backend>>( m, "_ExtraFields_Backend");
     py::class_<ExtraFields<EventType::Allocation>>(
         m, "_ExtraFields_Allocation");
     py::class_<ExtraFields<EventType::PyCall>>(m, "_ExtraFields_PyCall");
