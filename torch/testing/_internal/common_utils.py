@@ -707,12 +707,10 @@ def run_tests(argv=UNITTEST_ARGS):
                 else:
                     exit(1)
             else:
-                n = "2"
-                if os.environ["SHARD_NUMBER"] == "2":
-                    n = "1"
+                if os.environ["SHARD_NUMBER"] == "3":
+                    n = "3"
                 if os.environ["SHARD_NUMBER"] == "4":
-                    os.environ["OMP_NUM_THREADS"] = "4"
-                    os.environ["MKL_NUM_THREADS"] = "4"
+                    n = "4"
                 import pytest
                 os.environ["NO_COLOR"] = "1"
                 pytest_report_path = test_report_path.replace('python-unittest', 'python-pytest')
@@ -722,8 +720,12 @@ def run_tests(argv=UNITTEST_ARGS):
                 print(f'Test results will be stored in {pytest_report_path}')
                 # -vv for verbose, -s for getting more of stdout, -x for terminating on failure
                 os.environ["USING_PYTEST"] = "1"
-                exit_code = pytest.main(args=[inspect.getfile(sys._getframe(1)), f'-n={n}', '-vv', '-x',
-                                        '-rfEsX', f'--junit-xml-reruns={pytest_report_path}.xml'])
+                if os.environ["SHARD_NUMBER"] == "2":
+                    exit_code = pytest.main(args=[inspect.getfile(sys._getframe(1)), '-vv', '-x', '--reruns=2',
+                                            '-rfEsX', f'--junit-xml-reruns={pytest_report_path}.xml'])
+                else:
+                    exit_code = pytest.main(args=[inspect.getfile(sys._getframe(1)), f'-n={n}', '-vv', '-x', '--reruns=2',
+                                            '-rfEsX', f'--junit-xml-reruns={pytest_report_path}.xml'])
                 del os.environ["USING_PYTEST"]
                 sanitize_pytest_xml(f'{pytest_report_path}.xml')
                 if (exit_code == 0 or exit_code == 5):

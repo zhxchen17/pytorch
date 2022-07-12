@@ -148,7 +148,7 @@ pytest-xdist
 #Pinned versions:
 #test that import:
 
-# pytest-rerunfailures
+pytest-rerunfailures
 #Description: plugin for rerunning tests in pytest
 #Pinned versions:
 #test that import:
