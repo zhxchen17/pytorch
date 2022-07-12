@@ -694,32 +694,42 @@ def run_tests(argv=UNITTEST_ARGS):
         test_filename = sanitize_test_filename(inspect.getfile(sys._getframe(1)))
         test_report_path = TEST_SAVE_XML + LOG_SUFFIX
         test_report_path = os.path.join(test_report_path, test_filename)
-        if test_filename in PYTEST_FILES and not IS_SANDCASTLE and not (
-            "cuda" in os.environ["BUILD_ENVIRONMENT"] and "linux" in os.environ["BUILD_ENVIRONMENT"]
-        ):
-            import pytest
-            os.environ["NO_COLOR"] = "1"
-            pytest_report_path = test_report_path.replace('python-unittest', 'python-pytest')
-            os.makedirs(pytest_report_path, exist_ok=True)
-            # part of our xml parsing looks for grandparent folder names
-            pytest_report_path = os.path.join(pytest_report_path, test_filename)
-            print(f'Test results will be stored in {pytest_report_path}')
-            # -vv for verbose, -s for getting more of stdout, -x for terminating on failure
-            os.environ["USING_PYTEST"] = "1"
-            exit_code = pytest.main(args=[inspect.getfile(sys._getframe(1)), '-n=2', '-vv', '-x', '--reruns=2',
-                                    '-rfEsX', f'--junit-xml-reruns={pytest_report_path}.xml'])
-            del os.environ["USING_PYTEST"]
-            sanitize_pytest_xml(f'{pytest_report_path}.xml')
-            os.makedirs(test_report_path, exist_ok=True)
-            verbose = '--verbose' in argv or '-v' in argv
-            unittest_success = unittest.main(argv=argv, testRunner=xmlrunner.XMLTestRunner(
-                output=test_report_path,
-                verbosity=2 if verbose else 1,
-                resultclass=XMLTestResultVerbose), exit=False).result.wasSuccessful()
-            if unittest_success and (exit_code == 0 or exit_code == 5):
-                exit(0)
+        if not ("cuda" in os.environ["BUILD_ENVIRONMENT"] and "linux" in os.environ["BUILD_ENVIRONMENT"]):
+            if os.environ["SHARD_NUMBER"] == "1":
+                os.makedirs(test_report_path, exist_ok=True)
+                verbose = '--verbose' in argv or '-v' in argv
+                unittest_success = unittest.main(argv=argv, testRunner=xmlrunner.XMLTestRunner(
+                    output=test_report_path,
+                    verbosity=2 if verbose else 1,
+                    resultclass=XMLTestResultVerbose), exit=False).result.wasSuccessful()
+                if unittest_success:
+                    exit(0)
+                else:
+                    exit(1)
             else:
-                exit(1)
+                n = "2"
+                if os.environ["SHARD_NUMBER"] == "2":
+                    n = "1"
+                if os.environ["SHARD_NUMBER"] == "4":
+                    os.environ["OMP_NUM_THREADS"] = "4"
+                    os.environ["MKL_NUM_THREADS"] = "4"
+                import pytest
+                os.environ["NO_COLOR"] = "1"
+                pytest_report_path = test_report_path.replace('python-unittest', 'python-pytest')
+                os.makedirs(pytest_report_path, exist_ok=True)
+                # part of our xml parsing looks for grandparent folder names
+                pytest_report_path = os.path.join(pytest_report_path, test_filename)
+                print(f'Test results will be stored in {pytest_report_path}')
+                # -vv for verbose, -s for getting more of stdout, -x for terminating on failure
+                os.environ["USING_PYTEST"] = "1"
+                exit_code = pytest.main(args=[inspect.getfile(sys._getframe(1)), f'-n={n}', '-vv', '-x', '--reruns=2',
+                                        '-rfEsX', f'--junit-xml-reruns={pytest_report_path}.xml'])
+                del os.environ["USING_PYTEST"]
+                sanitize_pytest_xml(f'{pytest_report_path}.xml')
+                if (exit_code == 0 or exit_code == 5):
+                    exit(0)
+                else:
+                    exit(1)
         else:
             exit(0)
             if verbose:

@@ -32,11 +32,10 @@ jobs:
       # add backwards_compat test back when fixed from https://github.com/pytorch/pytorch/pull/81160
       test-matrix: |
         { include: [
-          { config: "default", shard: 1, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "default", shard: 2, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "distributed", shard: 1, num_shards: 1, runner: "linux.2xlarge" },
-          { config: "docs_test", shard: 1, num_shards: 1,  runner: "linux.2xlarge" },
-          { config: "jit_legacy", shard: 1, num_shards: 1, runner: "linux.2xlarge" },
+          { config: "default", shard: 1, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 2, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 3, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 4, num_shards: 4, runner: "linux.2xlarge" },
         ]}
 
   linux-docs:
@@ -86,11 +85,10 @@ jobs:
       docker-image: ${{ needs.linux-focal-py3_7-clang7-asan-build.outputs.docker-image }}
       test-matrix: |
         { include: [
-          { config: "default", shard: 1, num_shards: 5, runner: "linux.2xlarge" },
-          { config: "default", shard: 2, num_shards: 5, runner: "linux.2xlarge" },
-          { config: "default", shard: 3, num_shards: 5, runner: "linux.2xlarge" },
-          { config: "default", shard: 4, num_shards: 5, runner: "linux.2xlarge" },
-          { config: "default", shard: 5, num_shards: 5, runner: "linux.2xlarge" },
+          { config: "default", shard: 1, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 2, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 3, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 4, num_shards: 4, runner: "linux.2xlarge" },
         ]}
 
   linux-focal-py3_7-clang10-onnx-build:
@@ -100,18 +98,18 @@ jobs:
       build-environment: linux-focal-py3.7-clang10-onnx
       docker-image-name: pytorch-linux-focal-py3-clang10-onnx
 
-  linux-focal-py3_7-clang10-onnx-test:
-    name: linux-focal-py3.7-clang10-onnx
-    uses: ./.github/workflows/_linux-test.yml
-    needs: linux-focal-py3_7-clang10-onnx-build
-    with:
-      build-environment: linux-focal-py3.7-clang10-onnx
-      docker-image: ${{ needs.linux-focal-py3_7-clang10-onnx-build.outputs.docker-image }}
-      test-matrix: |
-        { include: [
-          { config: "default", shard: 1, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "default", shard: 2, num_shards: 2, runner: "linux.2xlarge" },
-        ]}
+  # linux-focal-py3_7-clang10-onnx-test:
+  #   name: linux-focal-py3.7-clang10-onnx
+  #   uses: ./.github/workflows/_linux-test.yml
+  #   needs: linux-focal-py3_7-clang10-onnx-build
+  #   with:
+  #     build-environment: linux-focal-py3.7-clang10-onnx
+  #     docker-image: ${{ needs.linux-focal-py3_7-clang10-onnx-build.outputs.docker-image }}
+  #     test-matrix: |
+  #       { include: [
+  #         { config: "default", shard: 1, num_shards: 2, runner: "linux.2xlarge" },
+  #         { config: "default", shard: 2, num_shards: 2, runner: "linux.2xlarge" },
+  #       ]}
 
   linux-bionic-py3_7-clang9-build:
     name: linux-bionic-py3.7-clang9
@@ -129,13 +127,18 @@ jobs:
       docker-image: ${{ needs.linux-bionic-py3_7-clang9-build.outputs.docker-image }}
       test-matrix: |
         { include: [
-          { config: "default", shard: 1, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "default", shard: 2, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "crossref", shard: 1, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "crossref", shard: 2, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "dynamo", shard: 1, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "dynamo", shard: 2, num_shards: 2, runner: "linux.2xlarge" },
-          { config: "functorch", shard: 1, num_shards: 1, runner: "linux.2xlarge" },
+          { config: "default", shard: 1, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 2, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 3, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "default", shard: 4, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "crossref", shard: 1, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "crossref", shard: 2, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "crossref", shard: 3, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "crossref", shard: 4, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "dynamo", shard: 1, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "dynamo", shard: 2, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "dynamo", shard: 3, num_shards: 4, runner: "linux.2xlarge" },
+          { config: "dynamo", shard: 4, num_shards: 4, runner: "linux.2xlarge" },
         ]}
 
   linux-bionic-cuda11_3-py3_7-clang9-build:
@@ -171,22 +174,22 @@ jobs:
       build-environment: linux-bionic-cuda11.6-py3.7-gcc7
       docker-image-name: pytorch-linux-bionic-cuda11.6-cudnn8-py3-gcc7
 
-  linux-bionic-cuda11_6-py3_7-gcc7-test:
-    name: linux-bionic-cuda11.6-py3.7-gcc7
-    uses: ./.github/workflows/_linux-test.yml
-    needs: linux-bionic-cuda11_6-py3_7-gcc7-build
-    with:
-      build-environment: linux-bionic-cuda11.6-py3.7-gcc7
-      docker-image: ${{ needs.linux-bionic-cuda11_6-py3_7-gcc7-build.outputs.docker-image }}
-      test-matrix: |
-        { include: [
-          { config: "default", shard: 1, num_shards: 4, runner: "linux.4xlarge.nvidia.gpu" },
-          { config: "default", shard: 2, num_shards: 4, runner: "linux.4xlarge.nvidia.gpu" },
-          { config: "default", shard: 3, num_shards: 4, runner: "linux.4xlarge.nvidia.gpu" },
-          { config: "default", shard: 4, num_shards: 4, runner: "linux.4xlarge.nvidia.gpu" },
-          { config: "distributed", shard: 1, num_shards: 2, runner: "linux.8xlarge.nvidia.gpu" },
-          { config: "distributed", shard: 2, num_shards: 2, runner: "linux.8xlarge.nvidia.gpu" },
-        ]}
+  # linux-bionic-cuda11_6-py3_7-gcc7-test:
+  #   name: linux-bionic-cuda11.6-py3.7-gcc7
+  #   uses: ./.github/workflows/_linux-test.yml
+  #   needs: linux-bionic-cuda11_6-py3_7-gcc7-build
+  #   with:
+  #     build-environment: linux-bionic-cuda11.6-py3.7-gcc7
+  #     docker-image: ${{ needs.linux-bionic-cuda11_6-py3_7-gcc7-build.outputs.docker-image }}
+  #     test-matrix: |
+  #       { include: [
+  #         { config: "default", shard: 1, num_shards: 4, runner: "linux.4xlarge.nvidia.gpu" },
+  #         { config: "default", shard: 2, num_shards: 4, runner: "linux.4xlarge.nvidia.gpu" },
+  #         { config: "default", shard: 3, num_shards: 4, runner: "linux.4xlarge.nvidia.gpu" },
+  #         { config: "default", shard: 4, num_shards: 4, runner: "linux.4xlarge.nvidia.gpu" },
+  #         { config: "distributed", shard: 1, num_shards: 2, runner: "linux.8xlarge.nvidia.gpu" },
+  #         { config: "distributed", shard: 2, num_shards: 2, runner: "linux.8xlarge.nvidia.gpu" },
+  #       ]}
 
   linux-xenial-py3-clang5-mobile-build:
     name: linux-xenial-py3-clang5-mobile-build
@@ -218,17 +221,17 @@ jobs:
       build-environment: linux-bionic-py3_7-clang8-xla
       docker-image-name: xla_base
 
-  linux-bionic-py3_7-clang8-xla-test:
-    name: linux-bionic-py3_7-clang8-xla
-    uses: ./.github/workflows/_linux-test.yml
-    needs: linux-bionic-py3_7-clang8-xla-build
-    with:
-      build-environment: linux-bionic-py3_7-clang8-xla
-      docker-image: ${{ needs.linux-bionic-py3_7-clang8-xla-build.outputs.docker-image }}
-      test-matrix: |
-        { include: [
-          { config: "xla", shard: 1, num_shards: 1, runner: "linux.2xlarge" },
-        ]}
+  # linux-bionic-py3_7-clang8-xla-test:
+  #   name: linux-bionic-py3_7-clang8-xla
+  #   uses: ./.github/workflows/_linux-test.yml
+  #   needs: linux-bionic-py3_7-clang8-xla-build
+  #   with:
+  #     build-environment: linux-bionic-py3_7-clang8-xla
+  #     docker-image: ${{ needs.linux-bionic-py3_7-clang8-xla-build.outputs.docker-image }}
+  #     test-matrix: |
+  #       { include: [
+  #         { config: "xla", shard: 1, num_shards: 1, runner: "linux.2xlarge" },
+  #       ]}
 
   win-vs2019-cpu-py3-build:
     name: win-vs2019-cpu-py3
@@ -246,8 +249,10 @@ jobs:
       cuda-version: cpu
       test-matrix: |
         { include: [
-          { config: "default", shard: 1, num_shards: 2, runner: "windows.4xlarge" },
-          { config: "default", shard: 2, num_shards: 2, runner: "windows.4xlarge" },
+          { config: "default", shard: 1, num_shards: 4, runner: "windows.4xlarge" },
+          { config: "default", shard: 2, num_shards: 4, runner: "windows.4xlarge" },
+          { config: "default", shard: 3, num_shards: 4, runner: "windows.4xlarge" },
+          { config: "default", shard: 4, num_shards: 4, runner: "windows.4xlarge" },
         ]}
 
   win-vs2019-cuda11_6-py3-build:
@@ -297,17 +302,17 @@ jobs:
       build-environment: linux-xenial-cuda11.3-py3.7-gcc7-deploy
       docker-image-name: pytorch-linux-xenial-cuda11.3-cudnn8-py3-gcc7
 
-  deploy-linux-xenial-cuda11_3-py3_7-gcc7-test:
-    name: linux-xenial-cuda11_3-py3_7-gcc7-deploy
-    uses: ./.github/workflows/_linux-test.yml
-    needs: linux-xenial-cuda11_3-py3_7-gcc7-deploy-build
-    with:
-      build-environment: linux-xenial-cuda11.3-py3.7-gcc7-deploy
-      docker-image: ${{ needs.linux-xenial-cuda11_3-py3_7-gcc7-deploy-build.outputs.docker-image }}
-      test-matrix: |
-        { include: [
-          { config: "deploy", shard: 1, num_shards: 1, runner: "linux.4xlarge.nvidia.gpu" },
-        ]}
+  # deploy-linux-xenial-cuda11_3-py3_7-gcc7-test:
+  #   name: linux-xenial-cuda11_3-py3_7-gcc7-deploy
+  #   uses: ./.github/workflows/_linux-test.yml
+  #   needs: linux-xenial-cuda11_3-py3_7-gcc7-deploy-build
+  #   with:
+  #     build-environment: linux-xenial-cuda11.3-py3.7-gcc7-deploy
+  #     docker-image: ${{ needs.linux-xenial-cuda11_3-py3_7-gcc7-deploy-build.outputs.docker-image }}
+  #     test-matrix: |
+  #       { include: [
+  #         { config: "deploy", shard: 1, num_shards: 1, runner: "linux.4xlarge.nvidia.gpu" },
+  #       ]}
 
   linux-focal-rocm5_1-py3_7-build:
     # don't run build twice on master
