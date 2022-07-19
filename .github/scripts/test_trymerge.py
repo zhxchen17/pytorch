@@ -319,6 +319,9 @@ class TestGitHubPR(TestCase):
     def useless(self) -> None:
         assert True
 
+    def useless2(self) -> None:
+        assert True
+
 
 if __name__ == "__main__":
     main()
