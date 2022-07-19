@@ -29,6 +29,7 @@ from urllib.error import HTTPError
 if 'GIT_REMOTE_URL' not in os.environ:
     os.environ['GIT_REMOTE_URL'] = "https://github.com/pytorch/pytorch"
 
+
 def mocked_gh_graphql(query: str, **kwargs: Any) -> Any:
     gql_db_fname = os.path.join(os.path.dirname(__file__), "gql_mocks.json")
 
@@ -43,7 +44,8 @@ def mocked_gh_graphql(query: str, **kwargs: Any) -> Any:
             json.dump(obj, f, indent=2)
             f.write("\n")
 
-    key = f"query_sha={sha256(query.encode('utf-8')).hexdigest()} " + " ".join([f"{k}={kwargs[k]}" for k in sorted(kwargs.keys())])
+    key = f"query_sha={sha256(query.encode('utf-8')).hexdigest()} " + \
+        " ".join([f"{k}={kwargs[k]}" for k in sorted(kwargs.keys())])
     mocked_queries = get_mocked_queries()
 
     if key in mocked_queries:
@@ -65,6 +67,7 @@ def mocked_gh_graphql(query: str, **kwargs: Any) -> Any:
 
     return rc
 
+
 def mock_parse_args(revert: bool = False,
                     force: bool = False) -> Any:
     class Object(object):
@@ -81,11 +84,13 @@ def mock_parse_args(revert: bool = False,
 
     return Object()
 
+
 def mock_revert(repo: GitRepo, pr: GitHubPR, *,
                 dry_run: bool = False,
                 comment_id: Optional[int] = None,
                 reason: Optional[str] = None) -> None:
     pass
+
 
 def mock_merge(pr_num: int, repo: GitRepo,
                dry_run: bool = False,
@@ -97,6 +102,7 @@ def mock_merge(pr_num: int, repo: GitRepo,
                timeout_minutes: int = 400,
                stale_pr_days: int = 3) -> None:
     pass
+
 
 def mock_gh_get_info() -> Any:
     return {"closed": False, "isCrossRepository": False}
@@ -309,6 +315,10 @@ class TestGitHubPR(TestCase):
                                            on_green=False,
                                            land_checks=False,
                                            mandatory_only=False)
+
+    def useless(self) -> None:
+        assert True
+
 
 if __name__ == "__main__":
     main()
