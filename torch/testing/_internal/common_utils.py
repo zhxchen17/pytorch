@@ -75,7 +75,7 @@ from torch.onnx import (register_custom_op_symbolic,
                         unregister_custom_op_symbolic)
 torch.backends.disable_global_flags()
 
-PYTEST_FILES = ["test_ops", "test_ops_gradients", "test_ops_jit"]
+PYTEST_FILES = ["test_ops", "test_ops_gradients", "test_ops_jit", "test_decomp", "test_utils", "test_dataloader"]
 
 FILE_SCHEMA = "file://"
 if sys.platform == 'win32':
@@ -708,7 +708,7 @@ def run_tests(argv=UNITTEST_ARGS):
             print(f'Test results will be stored in {pytest_report_path}')
             # mac slower on 4 proc than 3
             num_procs = 3 if "macos" in os.environ["BUILD_ENVIRONMENT"] else 4
-            exit_code = pytest.main(args=[inspect.getfile(sys._getframe(1)), f'-n={num_procs}', '-vv', '-x',
+            exit_code = pytest.main(args=[inspect.getfile(sys._getframe(1)), '-vv', '-x',
                                     '--reruns=2', '-rfEsX', f'--junit-xml-reruns={pytest_report_path}'])
             del os.environ["USING_PYTEST"]
             sanitize_pytest_xml(f'{pytest_report_path}')
