@@ -1538,6 +1538,8 @@ def remove_device_and_dtype_suffixes(test_name: str) -> str:
 
 def check_if_enable(test: unittest.TestCase):
     test_suite = str(test.__class__).split('\'')[1]
+    if not test_suite.startswith("__main__."):
+        test_suite = f"__main__.{test_suite}"
     if "USING_PYTEST" in os.environ:
         test_suite = f"__main__.{test_suite.split('.')[1]}"
     raw_test_name = f'{test._testMethodName} ({test_suite})'
