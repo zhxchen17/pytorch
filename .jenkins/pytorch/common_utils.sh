@@ -145,6 +145,15 @@ function install_functorch() {
   popd
 }
 
+function test_functorch() {
+  pushd functorch
+  pytest test
+  # Copy test reports to the pytorch/test folder. Those are what actually get uploaded.
+  cp *.json ../test
+  cp *.xml ../test
+  popd
+}
+
 function print_sccache_stats() {
   echo 'PyTorch Build Statistics'
   sccache --show-stats
