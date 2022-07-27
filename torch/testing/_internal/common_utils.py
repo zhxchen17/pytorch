@@ -712,9 +712,7 @@ def run_tests(argv=UNITTEST_ARGS):
         test_filename = sanitize_test_filename(test_filename)
         test_report_path = TEST_SAVE_XML + LOG_SUFFIX
         test_report_path = os.path.join(test_report_path, test_filename)
-        if test_filename in PYTEST_FILES and not IS_SANDCASTLE and not (
-            "cuda" in os.environ["BUILD_ENVIRONMENT"] and "linux" in os.environ["BUILD_ENVIRONMENT"]
-        ):
+        if test_filename in PYTEST_FILES and not IS_SANDCASTLE:
             # exclude linux cuda tests because we run into memory issues when running in parallel
             import pytest
             os.environ["NO_COLOR"] = "1"
@@ -865,10 +863,11 @@ TEST_SKIP_FAST = os.getenv('PYTORCH_TEST_SKIP_FAST', '0') == '1'
 TEST_WITH_CROSSREF = os.getenv('PYTORCH_TEST_WITH_CROSSREF', '0') == '1'
 
 if (
+    "USING_PYTEST" in os.environ and
     "linux" in os.environ["BUILD_ENVIRONMENT"]
     and TEST_CUDA
 ):
-    torch.cuda.set_per_process_memory_fraction(0.14)
+    torch.cuda.set_per_process_memory_fraction(0.13)
 
 def skipIfCrossRef(fn):
     @wraps(fn)
