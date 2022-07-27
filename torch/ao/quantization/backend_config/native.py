@@ -9,6 +9,7 @@ from ._common_operator_config_utils import (
     _get_conv_configs,
     _get_share_qparams_op_configs,
 )
+from .backend_config import BackendConfig
 from .observation_type import ObservationType
 from ..fake_quantize import FixedQParamsFakeQuantize
 from ..fuser_method_mappings import (
@@ -306,7 +307,21 @@ def get_native_backend_config_dict():
         ],
     }
 
+# TODO: actually rewrite the dicts into BackendConfig
+def get_native_backend_config():
+    """ Get BackendConfig for PyTorch Native backend (fbgemm/qnnpack). """
+    return BackendConfig.from_dict(get_native_backend_config_dict())
+
+def get_test_only_legacy_native_backend_config():
+    """
+    This is a backend configuration for the union of fbgemm/qnnpack
+    and various additional fp16 ops.
+    """
+    return BackendConfig.from_dict(get_test_only_legacy_native_backend_config_dict())
+
 __all__ = [
+    "get_test_only_legacy_native_backend_config",
     "get_test_only_legacy_native_backend_config_dict",
+    "get_native_backend_config",
     "get_native_backend_config_dict",
 ]
