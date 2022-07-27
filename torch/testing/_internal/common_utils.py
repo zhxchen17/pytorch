@@ -712,7 +712,9 @@ def run_tests(argv=UNITTEST_ARGS):
         test_filename = sanitize_test_filename(test_filename)
         test_report_path = TEST_SAVE_XML + LOG_SUFFIX
         test_report_path = os.path.join(test_report_path, test_filename)
-        if test_filename in PYTEST_FILES and not IS_SANDCASTLE:
+        if test_filename in PYTEST_FILES and not IS_SANDCASTLE and not (
+            "cuda" in os.environ["BUILD_ENVIRONMENT"] and "linux" in os.environ["BUILD_ENVIRONMENT"]
+        ):
             # exclude linux cuda tests because we run into memory issues when running in parallel
             import pytest
             os.environ["NO_COLOR"] = "1"
