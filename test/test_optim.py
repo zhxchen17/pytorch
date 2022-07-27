@@ -467,11 +467,11 @@ class TestOptim(TestCase):
             ((optim.Adagrad, optim._multi_tensor.Adagrad), dict(weight_decay=1)),
         ]
 
-        kIterations = 4
+        kIterations = 300
         device = 'cuda'
-
+        failed = 0
         for optimizers, params in optimizer_pairs_with_flags:
-            res = []
+            res, state = [], []
             for opt in optimizers:
                 input = torch.tensor([0.1, 0.2, 0.3, 0.4, 0.5, 0.6], dtype=torch.float64, device=device).reshape(3, 2)
 
@@ -495,10 +495,30 @@ class TestOptim(TestCase):
 
                     optimizer.step()
 
+                state.append(optimizer.state)
                 res.append(model.parameters())
 
-            for p1, p2 in zip(res[0], res[1]):
-                self.assertEqual(p1, p2, atol=5e-5, rtol=0)
+            st_state = state[0]
+            mt_state = state[1]
+            for st_p, mt_p in zip(res[0], res[1]):
+                try:
+                    self.assertEqual(st_p, mt_p, atol=5e-5, rtol=0)
+                except AssertionError:
+                    failed = 1
+                    print("Parameter mismatch for ", optimizers)
+
+                # check that optimizer states are the same
+                st_p_state = st_state[st_p]
+                mt_p_state = mt_state[mt_p]
+
+                for k in st_p_state:
+                    try:
+                        self.assertEqual(st_p_state[k], mt_p_state[k])
+                    except AssertionError:
+                        failed = 1
+                        print(optimizers, params, "\nState mismatch for key ", k)
+        if failed == 1:
+            raise RuntimeError("Mismatch for some params or state dict")
 
     def test_adam(self):
         for optimizer in [optim.Adam, optim_mt.Adam]:
