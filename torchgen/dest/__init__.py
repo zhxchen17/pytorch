@@ -17,3 +17,4 @@ from .ufunc import (
     compute_ufunc_cpu_kernel as compute_ufunc_cpu_kernel,
     compute_ufunc_cuda as compute_ufunc_cuda,
 )
+from .dispatchless import DispatchlessComposite as DispatchlessComposite
