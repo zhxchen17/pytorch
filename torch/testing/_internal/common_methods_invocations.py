@@ -19841,6 +19841,7 @@ op_db: List[OpInfo] = [
             # Operation calls data_ptr() somewhere; needs to be fixed
             DecorateInfo(unittest.expectedFailure, 'TestCompositeCompliance', 'test_operator'),
             DecorateInfo(unittest.expectedFailure, 'TestCompositeCompliance', 'test_backward'),
+            DecorateInfo(pytest.mark.serial),
         ),
     ),
     OpInfo(
