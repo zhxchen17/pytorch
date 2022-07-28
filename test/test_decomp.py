@@ -281,6 +281,7 @@ CROSS_REF_EXCLUDE_SET = {
     (None, None, "nn.functional.relu6"),
     (None, None, "nn.functional.mish"),
     (None, None, "nn.functional.silu"),
+    (None, None, "meshgrid"),
 
 }
 
