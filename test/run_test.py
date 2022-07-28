@@ -936,6 +936,7 @@ def main():
         get_test_case_configs(dirpath=test_directory)
 
     has_failed = False
+    selected_tests = [x for x in selected_tests if x == "test_fx"]
     failure_messages = []
     try:
         for test in selected_tests:
