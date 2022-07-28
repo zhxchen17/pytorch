@@ -17239,8 +17239,7 @@ op_db: List[OpInfo] = [
            sample_inputs_func=sample_inputs_sort,
            supports_forward_ad=True,
            supports_fwgrad_bwgrad=True,
-           skips=(
-           )),
+           skips=(DecorateInfo(pytest.mark.serial),)),
     OpInfo('unique',
            dtypes=all_types_and(torch.bool, torch.bfloat16),
            dtypesIfCUDA=all_types_and(torch.bool, torch.float16),
