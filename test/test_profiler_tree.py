@@ -10,7 +10,6 @@ import torch
 from torch.testing._internal.common_utils import (
     TestCase, run_tests, IS_WINDOWS, TEST_WITH_CROSSREF, IS_ARM64)
 
-@unittest.skipIf(IS_ARM64, "Not working on ARM")
 class ProfilerTree:
 
     @staticmethod
@@ -81,6 +80,7 @@ class ProfilerTree:
             "object at 0xXXXXXXXXXXXX>",
             name)
 
+@unittest.skipIf(IS_ARM64, "Not working on ARM")
 class TestProfilerTree(TestCase):
     def assertTreesMatch(self, actual: str, expected: str):
         # Warning: Here be dragons
