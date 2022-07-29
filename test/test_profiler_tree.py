@@ -8,9 +8,9 @@ import unittest
 
 import torch
 from torch.testing._internal.common_utils import (
-    TestCase, run_tests, IS_WINDOWS, TEST_WITH_CROSSREF)
+    TestCase, run_tests, IS_WINDOWS, TEST_WITH_CROSSREF, IS_ARM64)
 
-
+@unittest.skipIf(IS_ARM64, "Not working on ARM")
 class ProfilerTree:
 
     @staticmethod
