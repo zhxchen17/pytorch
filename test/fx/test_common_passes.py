@@ -76,7 +76,8 @@ if torch.cuda.is_available():
 @instantiate_parametrized_tests
 class TestCommonPass(TestCase):
 
-    @parametrize("common_pass,f,device", itertools.product(Passes, Test_Cases, Devices))
+    @parametrize("common_pass,f,device", itertools.product(Passes, Test_Cases, Devices),
+                 name_fn=lambda x, y, z: f"common_pass_{x.__name__}_f_{y.__name__}_device_{z}")
     def test_correctness(self, common_pass, f, device):
         inp = torch.randn(10, device=device)
 
@@ -94,7 +95,8 @@ class TestCommonPass(TestCase):
         self.assertEqual(result, expected)
 
 
-    @parametrize("common_pass,f,device", itertools.product(Passes, Factory_Test_Cases, Devices))
+    @parametrize("common_pass,f,device", itertools.product(Passes, Factory_Test_Cases, Devices),
+                 name_fn=lambda x, y, z: f"common_pass_{x.__name__}_f_{y.__name__}_device_{z}")
     def test_correctness_factory(self, common_pass, f, device):
         inp = torch.randn(10, device=device)
         traced_m = make_fx(f)(inp, device)
