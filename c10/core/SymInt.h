@@ -43,6 +43,7 @@ class C10_API SymInt {
   }
 
   SymInt operator+(SymInt sci) const;
+  SymInt operator-(SymInt sci) const;
   SymInt operator*(SymInt sci) const;
   bool operator==(SymInt sci) const;
   bool operator!=(SymInt p2) const;
